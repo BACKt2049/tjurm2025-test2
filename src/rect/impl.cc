@@ -1,16 +1,39 @@
 #include "impls.h"
-
+#include <vector>
+#include <algorithm>
 
 std::pair<cv::Rect, cv::RotatedRect> get_rect_by_contours(const cv::Mat& input) {
-    /**
-     * 要求：
-     * 使用findCountours函数找出输入图像（彩色图像）中的矩形轮廓，并且返回它的外接矩形，以及
-     * 最小面积外接矩形。所需要的函数自行查找。
-     * 
-     * 通过条件：
-     * 运行测试点，你找到的矩形跟答案一样就行。
-    */
+    std::vector<std::vector<cv::Point>> contours;
+    std::vector<cv::Vec4i> hierarchy;
+
+    // 将输入图像转换为灰度图，然后进行二值化
+    cv::Mat gray;
+    cv::cvtColor(input, gray, cv::COLOR_BGR2GRAY);
+    cv::threshold(gray, gray, 100, 255, cv::THRESH_BINARY_INV);
+
+    // 查找轮廓
+    cv::findContours(gray, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
     std::pair<cv::Rect, cv::RotatedRect> res;
-    // IMPLEMENT YOUR CODE HERE
+    double maxArea = 0;
+
+    // 遍历所有轮廓
+    for (size_t i = 0; i < contours.size(); i++) {
+        // 计算外接矩形
+        cv::Rect rect = cv::boundingRect(contours[i]);
+        // 计算最小面积外接矩形
+        cv::RotatedRect rotatedRect = cv::minAreaRect(contours[i]);
+
+        // 计算轮廓面积
+        double area = cv::contourArea(contours[i]);
+
+        // 更新最大面积的矩形
+        if (area > maxArea) {
+            maxArea = area;
+            res.first = rect;
+            res.second = rotatedRect;
+        }
+    }
+
     return res;
 }
