@@ -1,5 +1,4 @@
 #include "impls.h"
-#include <vector>
 #include <iostream>
 std::vector<cv::Mat> split(const cv::Mat& rgb_image)
 {
