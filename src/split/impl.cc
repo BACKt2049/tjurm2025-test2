@@ -12,7 +12,7 @@ std::vector<cv::Mat> split(const cv::Mat& rgb_image)
             result[0].at<uchar>(y, x) = pixel[0]; 
             result[1].at<uchar>(y, x) = pixel[1]; 
             result[2].at<uchar>(y, x) = pixel[2];
+            }
         }
-    }
     return result;
 }
