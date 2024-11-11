@@ -1,7 +1,6 @@
 #include "impls.h"
-#include <opencv2/opencv.hpp>
-
-std::vector<cv::Mat> erode(const cv::Mat& src_erode, const cv::Mat& src_dilate) {
+std::vector<cv::Mat> erode(const cv::Mat& src_erode, const cv::Mat& src_dilate) 
+{
     cv::Mat gray_erode, gray_dilate;
     cv::Mat binary_erode, binary_dilate;
     cv::Mat dst_erode, dst_dilate;
