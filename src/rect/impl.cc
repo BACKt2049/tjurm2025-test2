@@ -1,7 +1,5 @@
 #include "impls.h"
-#include <vector>
 #include <algorithm>
-
 std::pair<cv::Rect, cv::RotatedRect> get_rect_by_contours(const cv::Mat& input) 
 {
     std::vector<std::vector<cv::Point>> contours;std::vector<cv::Vec4i> hierarchy;
