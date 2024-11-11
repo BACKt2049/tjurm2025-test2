@@ -1,7 +1,5 @@
 #include "impls.h"
-#include <opencv2/opencv.hpp>
 #include <unordered_map>
-
 std::unordered_map<int, cv::Rect> roi_color(const cv::Mat& input)
 {
     std::unordered_map<int, cv::Rect> res;
