@@ -1,7 +1,6 @@
 #include "impls.h"
-
-
-float compute_area_ratio(const std::vector<cv::Point>& contour) {
+float compute_area_ratio(const std::vector<cv::Point>& contour) 
+{
      double contourArea = cv::contourArea(contour);
     cv::Rect boundingRect = cv::boundingRect(contour);
     double rectArea = boundingRect.width * boundingRect.height;
