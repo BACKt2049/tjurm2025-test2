@@ -1,32 +1,20 @@
 #include <opencv2/opencv.hpp>
-#include <vector>
+#include "impls.h"
 
-std::vector<std::vector<cv::Point>> find_contours(const cv::Mat& input)
-{
-    cv::imshow("Input Image", input);
-    cv::waitKey(0); 
-    std::vector<std::vector<cv::Point>> contours;
+std::vector<std::vector<cv::Point>> find_contours(const cv::Mat& input) {
+    std::vector<std::vector<cv::Point>> res;
     std::vector<cv::Vec4i> hierarchy;
     cv::Mat gray;
-    if (input.channels() == 3) 
-    {
-        cv::cvtColor(input, gray, cv::COLOR_BGR2GRAY);
-    } else
-    {
-        gray = input.clone();
-    }
-    cv::Mat blurred;
-    cv::GaussianBlur(gray, blurred, cv::Size(5, 5), 0);
-    cv::Mat canny_output;
-    cv::Canny(blurred, canny_output, 50, 150);
-    cv::findContours(canny_output, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
-    std::vector<std::vector<cv::Point>> res; 
-    for (size_t i = 0; i < hierarchy.size(); i++)
-        {
-        if (hierarchy[i][3] == -1 && hierarchy[i][0] == -1)
-        {
-            res.push_back(contours[i]);
+    cv::cvtColor(input, gray, cv::COLOR_BGR2GRAY);
+    cv::Mat binary;
+    cv::threshold(gray, binary, 100, 255, cv::THRESH_BINARY_INV);
+    cv::findContours(binary, res, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
+    std::vector<std::vector<cv::Point>> innerContours;
+    for (size_t i = 0; i < hierarchy.size(); i++) {
+        if (hierarchy[i][3] == -1) {
+            innerContours.push_back(res[i]);
         }
     }
-    return res;
+    
+    return innerContours;
 }
